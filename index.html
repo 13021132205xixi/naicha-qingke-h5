@@ -1,1 +1,1470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🧋 老板请喝奶茶啦！</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:linear-gradient(135deg,#ff0000 0%,#ff6600 30%,#ffcc00 60%,#ff0066 100%);background-attachment:fixed;min-height:100vh;color:#333;overflow-x:hidden}
+body::before{content:"";position:fixed;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(45deg,transparent,transparent 35px,rgba(255,255,255,0.03) 35px,rgba(255,255,255,0.03) 70px);pointer-events:none;z-index:0}
+.page{display:none;min-height:100vh;padding:16px;padding-bottom:80px;position:relative;z-index:1}
+.page.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes glow{0%,100%{box-shadow:0 0 10px #ffd700,0 0 20px #ffd700}50%{box-shadow:0 0 20px #ffd700,0 0 40px #ffd700,0 0 60px #ff6600}}
+@keyframes rainbow{0%{color:#ff0000}16%{color:#ff8800}33%{color:#ffee00}50%{color:#00ff00}66%{color:#0088ff}83%{color:#8800ff}100%{color:#ff0000}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-15px) rotate(5deg)}}
+.container{max-width:480px;margin:0 auto}
+.card{background:#fff;border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 8px 30px rgba(0,0,0,0.15);border:3px solid #ffd700}
+.card.gold{background:linear-gradient(135deg,#fff8dc 0%,#ffecb3 100%);border:3px solid #ff8c00}
+.card.red{background:linear-gradient(135deg,#fff0f0 0%,#ffe0e0 100%);border:3px solid #ff4444}
+.title{text-align:center;font-size:28px;font-weight:900;color:#ff0000;text-shadow:2px 2px 0 #ffd700,4px 4px 0 rgba(0,0,0,0.1);margin-bottom:8px;letter-spacing:2px}
+.subtitle{text-align:center;font-size:14px;color:#666;margin-bottom:20px}
+.btn{display:block;width:100%;padding:16px;border:none;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer;transition:all .2s;margin-bottom:12px;text-align:center;text-decoration:none}
+.btn:active{transform:scale(0.96)}
+.btn-primary{background:linear-gradient(135deg,#ff0000,#ff6600);color:#fff;box-shadow:0 4px 15px rgba(255,0,0,0.4);border:2px solid #ffd700}
+.btn-primary:hover{box-shadow:0 6px 25px rgba(255,0,0,0.6)}
+.btn-secondary{background:linear-gradient(135deg,#ffd700,#ffaa00);color:#8b0000;box-shadow:0 4px 15px rgba(255,165,0,0.4);border:2px solid #ff8c00}
+.btn-outline{background:#fff;color:#ff0000;border:2px solid #ff0000}
+.btn-small{padding:10px 16px;font-size:14px;width:auto;display:inline-block;margin-bottom:0}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+.input-group{margin-bottom:16px}
+.input-group label{display:block;font-size:14px;font-weight:700;color:#333;margin-bottom:6px}
+.input-group input,.input-group select{width:100%;padding:12px 14px;border:2px solid #ddd;border-radius:10px;font-size:16px;outline:none;transition:border-color .2s;background:#fff}
+.input-group input:focus,.input-group select:focus{border-color:#ff0000}
+.brand-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.brand-item{background:#fff;border:2px solid #ddd;border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;transition:all .2s;font-size:13px;font-weight:600}
+.brand-item:active{transform:scale(0.95)}
+.brand-item.selected{border-color:#ff0000;background:linear-gradient(135deg,#fff0f0,#ffe0e0);box-shadow:0 0 12px rgba(255,0,0,0.3)}
+.brand-item .emoji{font-size:28px;display:block;margin-bottom:4px}
+.brand-item .type{font-size:10px;color:#999;font-weight:400}
+.product-list{margin-bottom:16px}
+.product-item{background:#fff;border:2px solid #eee;border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer;transition:all .2s}
+.product-item:active{transform:scale(0.98)}
+.product-item.selected{border-color:#ff0000;background:linear-gradient(135deg,#fff8f8,#fff0f0)}
+.product-item .name{font-size:16px;font-weight:700;color:#333;margin-bottom:4px}
+.product-item .price{font-size:14px;color:#ff0000;font-weight:700}
+.product-item .tag{display:inline-block;font-size:10px;background:#ff0000;color:#fff;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:middle}
+.option-group{margin-bottom:14px}
+.option-group .label{font-size:14px;font-weight:700;color:#333;margin-bottom:8px}
+.option-chips{display:flex;flex-wrap:wrap;gap:8px}
+.option-chip{padding:8px 14px;border:2px solid #ddd;border-radius:20px;font-size:13px;cursor:pointer;transition:all .2s;background:#fff;font-weight:500}
+.option-chip:active{transform:scale(0.95)}
+.option-chip.selected{border-color:#ff0000;background:#ff0000;color:#fff}
+.option-chip .add-price{font-size:11px;opacity:0.8}
+.topping-chips{display:flex;flex-wrap:wrap;gap:8px}
+.topping-chip{padding:8px 14px;border:2px solid #ddd;border-radius:20px;font-size:13px;cursor:pointer;transition:all .2s;background:#fff;font-weight:500}
+.topping-chip.selected{border-color:#ff8c00;background:#fff3e0;color:#e65100}
+.order-summary{background:linear-gradient(135deg,#fff8dc,#ffecb3);border:2px solid #ff8c00;border-radius:12px;padding:16px;margin-bottom:16px}
+.order-summary .row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:14px}
+.order-summary .total{font-size:20px;font-weight:900;color:#ff0000;border-top:2px dashed #ff8c00;padding-top:10px;margin-top:6px}
+.order-list{margin-bottom:16px}
+.order-card{background:#fff;border:2px solid #eee;border-radius:12px;padding:14px;margin-bottom:10px}
+.order-card .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.order-card .user{font-size:16px;font-weight:700;color:#333}
+.order-card .time{font-size:11px;color:#999}
+.order-card .detail{font-size:13px;color:#666;line-height:1.6}
+.order-card .price{font-size:15px;color:#ff0000;font-weight:700;margin-top:6px}
+.empty-state{text-align:center;padding:40px 20px;color:#999}
+.empty-state .emoji{font-size:60px;margin-bottom:16px;animation:bounce 2s infinite}
+.empty-state .text{font-size:16px;font-weight:600}
+.tab-bar{display:flex;background:#fff;border-radius:12px;overflow:hidden;margin-bottom:16px;border:2px solid #ddd}
+.tab-item{flex:1;padding:12px;text-align:center;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;color:#666}
+.tab-item.active{background:linear-gradient(135deg,#ff0000,#ff6600);color:#fff}
+.summary-group{margin-bottom:16px}
+.summary-group .group-title{font-size:16px;font-weight:700;color:#333;margin-bottom:10px;padding-left:10px;border-left:4px solid #ff0000}
+.summary-item{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#f9f9f9;border-radius:8px;margin-bottom:6px;font-size:14px}
+.summary-item .count{background:#ff0000;color:#fff;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:700}
+.history-item{background:#fff;border:2px solid #eee;border-radius:12px;padding:16px;margin-bottom:12px;cursor:pointer;transition:all .2s}
+.history-item:active{transform:scale(0.98)}
+.history-item .brand{font-size:18px;font-weight:700;color:#333;margin-bottom:4px}
+.history-item .meta{font-size:13px;color:#666;margin-bottom:4px}
+.history-item .status{display:inline-block;font-size:11px;padding:3px 8px;border-radius:4px;font-weight:600}
+.status.active{background:#e8f5e9;color:#2e7d32}
+.status.locked{background:#ffebee;color:#c62828}
+.boss-banner{background:linear-gradient(135deg,#ff0000 0%,#ff6600 50%,#ffd700 100%);border-radius:16px;padding:24px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden;animation:glow 2s infinite}
+.boss-banner::before{content:"🎉";position:absolute;top:10px;left:10px;font-size:30px;animation:spin 3s linear infinite}
+.boss-banner::after{content:"🌹";position:absolute;top:10px;right:10px;font-size:30px;animation:float 2s ease-in-out infinite}
+.boss-banner .thanks{font-size:24px;font-weight:900;color:#fff;text-shadow:2px 2px 4px rgba(0,0,0,0.3);margin-bottom:8px;animation:rainbow 3s linear infinite}
+.boss-banner .boss-name{font-size:32px;font-weight:900;color:#ffd700;text-shadow:2px 2px 0 #ff0000,4px 4px 8px rgba(0,0,0,0.3)}
+.boss-banner .brand-info{font-size:14px;color:#fff;margin-top:8px;opacity:0.9}
+.countdown{text-align:center;font-size:14px;color:#666;margin-bottom:16px}
+.countdown .time{font-size:24px;font-weight:900;color:#ff0000}
+.countdown.locked .time{color:#999}
+.lock-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:100;display:flex;align-items:center;justify-content:center}
+.lock-overlay .content{background:#fff;border-radius:16px;padding:30px;text-align:center;max-width:320px;margin:20px}
+.lock-overlay .emoji{font-size:60px;margin-bottom:16px}
+.lock-overlay .text{font-size:18px;font-weight:700;color:#333;margin-bottom:8px}
+.lock-overlay .sub{font-size:14px;color:#666}
+.config-panel{background:#f5f5f5;border-radius:12px;padding:16px;margin-bottom:16px}
+.config-panel .hint{font-size:12px;color:#999;margin-top:6px;line-height:1.5}
+.status-badge{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:4px 10px;border-radius:12px;font-weight:600;margin-bottom:12px}
+.status-badge.online{background:#e8f5e9;color:#2e7d32}
+.status-badge.offline{background:#ffebee;color:#c62828}
+.status-badge .dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+.copy-btn{background:#f0f0f0;border:1px solid #ddd;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;margin-left:8px}
+.share-box{background:linear-gradient(135deg,#e3f2fd,#bbdefb);border:2px solid #2196f3;border-radius:12px;padding:16px;margin-bottom:16px;word-break:break-all}
+.share-box .label{font-size:12px;color:#1565c0;font-weight:700;margin-bottom:6px}
+.share-box .url{font-size:12px;color:#333;font-family:monospace}
+.floating-emoji{position:fixed;font-size:40px;pointer-events:none;z-index:999;animation:floatUp 3s ease-out forwards}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-300px) scale(1.5)}}
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid #ffd700;display:flex;z-index:50;box-shadow:0 -4px 20px rgba(0,0,0,0.1)}
+.nav-item{flex:1;padding:10px;text-align:center;font-size:11px;color:#999;cursor:pointer;transition:all .2s}
+.nav-item.active{color:#ff0000;font-weight:700}
+.nav-item .icon{font-size:22px;display:block;margin-bottom:2px}
+.section-title{font-size:18px;font-weight:800;color:#333;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.section-title::before{content:"";width:4px;height:20px;background:linear-gradient(180deg,#ff0000,#ffd700);border-radius:2px}
+.highlight{background:linear-gradient(180deg,transparent 60%,#ffd700 60%);padding:0 4px;font-weight:700}
+.marquee{overflow:hidden;white-space:nowrap;background:#ff0000;color:#ffd700;padding:8px 0;font-size:14px;font-weight:700;margin-bottom:16px;border-radius:8px}
+.marquee span{display:inline-block;padding-left:100%;animation:marquee 15s linear infinite}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+</style>
+</head>
+<body>
 
+<!-- 首页 -->
+<div id="page-home" class="page active">
+<div class="container">
+<div class="marquee"><span>🎉 恭喜发财！老板大气！喝奶茶不发胖！点单不排队！ 🧋 感谢老板造福打工人！ ☕ 咖啡奶茶应有尽有！ 🌹 老板发财，万事如意！</span></div>
+<div class="title">🧋 奶茶请客系统 🧋</div>
+<div class="subtitle">版本 v1.0 · 土味尊享版 · 老板看了都流泪</div>
+<div class="card gold">
+<div style="text-align:center;margin-bottom:16px">
+<div style="font-size:60px;animation:bounce 1s infinite">👑</div>
+<div style="font-size:20px;font-weight:800;color:#8b0000;margin-top:8px">想成为全村的骄傲吗？</div>
+<div style="font-size:14px;color:#666;margin-top:4px">发起一场奶茶请客，收获同事们的膜拜</div>
+</div>
+<button class="btn btn-primary" onclick="goPage('host')">🚀 我要发车（当老板）</button>
+<button class="btn btn-secondary" onclick="showJoinInput()">🧋 我要蹭喝（输入车号）</button>
+<div id="join-input" style="display:none;margin-top:12px">
+<div class="input-group">
+<input type="text" id="join-code" placeholder="输入6位车号，比如 ABC123" maxlength="6" style="text-transform:uppercase;text-align:center;font-size:18px;letter-spacing:4px">
+</div>
+<button class="btn btn-primary btn-small" onclick="joinSession()">上车！</button>
+</div>
+</div>
+<div class="card">
+<div class="section-title">📖 使用说明</div>
+<div style="font-size:14px;color:#555;line-height:2">
+1️⃣ 发车人选品牌、填名字、设截止时间<br>
+2️⃣ 把分享链接或车号发到群里<br>
+3️⃣ 同事点进来选饮品、填名字（每人限一杯）<br>
+4️⃣ 到点自动锁单，发车人查看汇总去下单<br>
+5️⃣ 历史发车记录永久保存，方便老板复盘
+</div>
+</div>
+<div class="card red">
+<div style="text-align:center">
+<div style="font-size:14px;color:#c62828;font-weight:700;margin-bottom:8px">⚠️ 温馨提示</div>
+<div style="font-size:12px;color:#666;line-height:1.8">
+本系统仅供公司内部娱乐使用<br>
+请发车人量力而行，奶茶虽好，可不要破产哦<br>
+蹭喝的同事请心怀感恩，说声谢谢老板
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 发车页 -->
+<div id="page-host" class="page">
+<div class="container">
+<div class="title">🚀 发车大厅</div>
+<div class="subtitle">选择你的座驾，踏上请客之旅</div>
+<div class="card">
+<div class="section-title">🏪 第一步：选品牌</div>
+<div class="brand-grid" id="brand-grid"></div>
+</div>
+<div class="card">
+<div class="section-title">👤 第二步：留下大名</div>
+<div class="input-group">
+<input type="text" id="host-name" placeholder="请输入你的名字，将被永久铭记" maxlength="20">
+</div>
+<div style="font-size:12px;color:#999">页面将显示「感谢 XXX 老板」，给你充分的排面</div>
+</div>
+<div class="card">
+<div class="section-title">⏰ 第三步：设截止时间</div>
+<div class="input-group">
+<label>截止日期</label>
+<input type="date" id="deadline-date">
+</div>
+<div class="input-group">
+<label>截止时间</label>
+<input type="time" id="deadline-time" value="17:00">
+</div>
+<div style="font-size:12px;color:#999">到点后自动锁单，不能再点/改单</div>
+</div>
+<button class="btn btn-primary" onclick="createSession()" style="font-size:20px;padding:18px">🎉 确认发车！</button>
+<button class="btn btn-outline" onclick="goPage('home')">返回首页</button>
+</div>
+</div>
+
+<!-- 点单页 -->
+<div id="page-order" class="page">
+<div class="container">
+<div id="order-boss-banner"></div>
+<div id="order-countdown"></div>
+<div id="order-content">
+<div class="card">
+<div class="section-title">🧋 选饮品</div>
+<div class="product-list" id="product-list"></div>
+</div>
+<div id="option-panel" style="display:none">
+<div class="card">
+<div class="section-title">⚙️ 选规格</div>
+<div id="option-groups"></div>
+</div>
+<div class="card">
+<div class="section-title">✍️ 你的名字</div>
+<div class="input-group">
+<input type="text" id="order-user-name" placeholder="填名字，让老板知道是谁在蹭喝" maxlength="20">
+</div>
+<div style="font-size:12px;color:#999">每人限点一杯，重复点单会覆盖上一次</div>
+</div>
+<div class="order-summary" id="order-summary"></div>
+<button class="btn btn-primary" onclick="submitOrder()">✅ 确认下单！感谢老板！</button>
+</div>
+</div>
+<div id="order-locked" style="display:none">
+<div class="card">
+<div class="empty-state">
+<div class="emoji">🔒</div>
+<div class="text">本次发车已截止</div>
+<div style="font-size:13px;color:#999;margin-top:8px">想喝？等下一次老板发车吧</div>
+</div>
+</div>
+</div>
+<button class="btn btn-outline" onclick="goPage('home')">返回首页</button>
+</div>
+</div>
+
+<!-- 汇总页 -->
+<div id="page-summary" class="page">
+<div class="container">
+<div id="summary-boss-banner"></div>
+<div id="summary-countdown"></div>
+<div class="tab-bar">
+<div class="tab-item active" onclick="switchSummaryTab('product')">📦 按商品汇总</div>
+<div class="tab-item" onclick="switchSummaryTab('person')">👥 按人汇总</div>
+</div>
+<div id="summary-product"></div>
+<div id="summary-person" style="display:none"></div>
+<div class="card" id="summary-total-card" style="display:none">
+<div class="section-title">💰 账单总览</div>
+<div class="order-summary">
+<div class="row"><span>总杯数</span><span id="total-cups">0</span></div>
+<div class="row"><span>总金额</span><span id="total-amount">¥0</span></div>
+<div class="row"><span>人均</span><span id="avg-amount">¥0</span></div>
+</div>
+</div>
+<button class="btn btn-secondary" onclick="copySummary()">📋 复制汇总文本</button>
+<button class="btn btn-outline" onclick="goPage('home')">返回首页</button>
+</div>
+</div>
+
+<!-- 历史页 -->
+<div id="page-history" class="page">
+<div class="container">
+<div class="title">📜 历史发车</div>
+<div class="subtitle">老板们的光辉事迹，永载史册</div>
+<div id="history-list"></div>
+<button class="btn btn-outline" onclick="goPage('home')">返回首页</button>
+</div>
+</div>
+
+<!-- 配置页 -->
+<div id="page-config" class="page">
+<div class="container">
+<div class="title">⚙️ 系统配置</div>
+<div class="subtitle">配置后端，实现多人实时共享</div>
+<div id="config-status"></div>
+<div class="card gold" style="padding:14px;margin-bottom:16px">
+<div style="font-size:14px;font-weight:700;color:#8b0000;margin-bottom:6px">✅ 后端已内置配置，开箱即用</div>
+<div style="font-size:12px;color:#666;line-height:1.6">
+Supabase已配置好并写进页面里，所有人打开就能用，无需再配置。<br>
+如需换成自己的Supabase，在下面修改后点「保存配置」即可。
+</div>
+</div>
+<div class="card">
+<div class="section-title">🔗 Supabase 配置</div>
+<div class="input-group">
+<label>Supabase URL</label>
+<input type="text" id="sb-url" placeholder="https://xxx.supabase.co">
+</div>
+<div class="input-group">
+<label>Supabase Anon Key</label>
+<input type="text" id="sb-key" placeholder="eyJhbGciOi...">
+</div>
+<button class="btn btn-primary btn-small" onclick="saveConfig()">保存配置</button>
+<button class="btn btn-outline btn-small" onclick="initSupabaseTables()" style="margin-left:8px">🔧 初始化数据表</button>
+<div class="config-panel" style="margin-top:16px">
+<div style="font-size:13px;font-weight:700;color:#333;margin-bottom:8px">📖 配置教程（3步搞定）</div>
+<div style="font-size:12px;color:#666;line-height:2">
+1. 访问 <b>supabase.com</b> 注册免费账号<br>
+2. 新建 Project，复制 URL 和 Anon Key 填入上方<br>
+3. 点击「初始化数据表」自动建表<br>
+<b style="color:#ff0000">不配置也能用</b>：数据存在本地浏览器，仅单人可见<br>
+配置后支持多人实时共享订单，推荐配置！
+</div>
+</div>
+</div>
+<div class="card red">
+<div style="text-align:center">
+<div style="font-size:14px;font-weight:700;color:#c62828;margin-bottom:8px">🗑️ 危险操作</div>
+<button class="btn btn-outline btn-small" onclick="clearLocalData()" style="border-color:#ff0000;color:#ff0000">清空本地所有数据</button>
+</div>
+</div>
+<button class="btn btn-outline" onclick="goPage('home')">返回首页</button>
+</div>
+</div>
+
+<!-- 底部导航 -->
+<div class="nav-bar">
+<div class="nav-item active" onclick="goPage('home')" data-nav="home"><span class="icon">🏠</span>首页</div>
+<div class="nav-item" onclick="goPage('history')" data-nav="history"><span class="icon">📜</span>历史</div>
+<div class="nav-item" onclick="goPage('config')" data-nav="config"><span class="icon">⚙️</span>配置</div>
+</div>
+
+<!-- 锁单弹窗 -->
+<div id="lock-modal" class="lock-overlay" style="display:none">
+<div class="content">
+<div class="emoji">🔒</div>
+<div class="text">发车已截止！</div>
+<div class="sub">想喝奶茶？求求老板再开一车吧</div>
+<button class="btn btn-primary" style="margin-top:16px" onclick="closeLockModal()">知道了</button>
+</div>
+</div>
+
+<!-- SQL建表弹窗 -->
+<div id="sql-modal" class="lock-overlay" style="display:none">
+<div class="content" style="max-width:480px;text-align:left">
+<div style="text-align:center;margin-bottom:12px">
+<div style="font-size:40px;margin-bottom:8px">📋</div>
+<div style="font-size:18px;font-weight:700;color:#333">复制建表SQL</div>
+<div style="font-size:12px;color:#999;margin-top:4px">Supabase不允许远程建表，请手动执行</div>
+</div>
+<div style="background:#f5f5f5;border-radius:8px;padding:12px;margin:12px 0;max-height:250px;overflow-y:auto">
+<pre id="sql-modal-content" style="font-size:11px;white-space:pre-wrap;word-break:break-all;margin:0;font-family:monospace"></pre>
+</div>
+<div style="font-size:12px;color:#666;line-height:1.6;margin-bottom:12px">
+操作步骤：<br>
+1. 打开 Supabase 后台 → 左侧菜单「SQL Editor」<br>
+2. 点「New query」→ 粘贴上面的SQL → 点「Run」<br>
+3. 看到「Success. No rows returned」就成功了
+</div>
+<button class="btn btn-primary" style="margin-bottom:8px" onclick="copySql()">📋 复制SQL</button>
+<button class="btn btn-outline" onclick="closeSqlModal()">关闭</button>
+</div>
+</div>
+
+<script>
+// ==================== 品牌与商品数据 ====================
+const BRANDS = [
+{id:'chagee',name:'霸王茶姬',emoji:'🍵',type:'奶茶',
+ options:{
+  size:[{n:'中杯',p:0},{n:'大杯',p:2}],
+  ice:[{n:'标准冰'},{n:'少冰'},{n:'去冰'},{n:'热'}],
+  sugar:[{n:'标准糖'},{n:'少糖'},{n:'半糖'},{n:'微糖'},{n:'不另外加糖'}],
+  toppings:[{n:'珍珠',p:2},{n:'椰果',p:2},{n:'布丁',p:2},{n:'仙草',p:2}]
+ },
+ products:[
+  {n:'伯牙绝弦',p:20,tag:'招牌'},{n:'寻香山茶',p:20},{n:'白雾红尘',p:20},
+  {n:'桂馥兰香',p:18},{n:'山野栀子',p:18},{n:'花田乌龙',p:18},
+  {n:'青沫观音',p:22},{n:'万里木兰',p:20},{n:'醒时春山',p:18},
+  {n:'去日留声',p:18},{n:'青云香提',p:22},{n:'梵歌青提',p:22},
+  {n:'橙漫山茶花',p:18},{n:'桃桃乌龙',p:18},{n:'芒果雪糯米',p:20},
+  {n:'葡萄雪糯米',p:20},{n:'草莓雪糯米',p:20},{n:'轻因·伯牙绝弦',p:20},
+  {n:'原叶鲜奶茶',p:16},{n:'茉莉雪芽',p:16}
+ ]},
+{id:'heytea',name:'喜茶',emoji:'🧋',type:'奶茶',
+ options:{
+  ice:[{n:'冰'},{n:'少冰'},{n:'去冰'},{n:'热'},{n:'温'}],
+  sugar:[{n:'标准糖'},{n:'少少甜'},{n:'少甜'},{n:'不另外加糖'}],
+  toppings:[{n:'脆波波',p:3},{n:'西米',p:2},{n:'红柚果粒',p:3},{n:'弹弹冻',p:3},{n:'黑糖波波',p:3}]
+ },
+ products:[
+  {n:'多肉葡萄',p:20,tag:'招牌'},{n:'烤黑糖波波牛乳茶',p:19},{n:'烤黑糖波波牛乳',p:19},
+  {n:'超多肉芒芒甘露',p:20},{n:'椰椰芒芒',p:19},{n:'多肉青提',p:19},
+  {n:'酷黑莓桑',p:19},{n:'多肉桃李',p:19},{n:'轻芝多肉葡萄',p:19},
+  {n:'水牛乳双拼波波',p:18},{n:'小奶茉(白茉香)',p:16},{n:'芒芒甘露',p:18},
+  {n:'多肉杨梅',p:22},{n:'绯红厚乳茶',p:19},{n:'老丛厚乳茶',p:19},
+  {n:'清爽芭乐提',p:21},{n:'去火纤体瓶',p:19},{n:'提拉米苏·浓巧',p:22},
+  {n:'茶坊苦抹·浓',p:19},{n:'奇兰芭乐莲雾',p:19}
+ ]},
+{id:'nayuki',name:'奈雪的茶',emoji:'🍓',type:'奶茶',
+ options:{
+  size:[{n:'中杯',p:0},{n:'大杯',p:3}],
+  ice:[{n:'冰'},{n:'少冰'},{n:'去冰'}],
+  sugar:[{n:'正常甜'},{n:'少甜'},{n:'少少甜'},{n:'微甜'}],
+  toppings:[{n:'珍珠',p:2},{n:'椰果',p:2},{n:'布丁',p:2},{n:'仙草',p:2}]
+ },
+ products:[
+  {n:'霸气橙子',p:19,tag:'招牌'},{n:'霸气芝士草莓',p:29},{n:'霸气葡萄',p:27},
+  {n:'霸气芝士芒果',p:28},{n:'霸气杨梅',p:29},{n:'霸气西柚',p:25},
+  {n:'霸气杨枝甘露',p:28},{n:'霸气春见耙耙柑',p:28},{n:'霸气芒果',p:27},
+  {n:'霸气水蜜桃',p:28},{n:'霸气柠檬油柑',p:25},{n:'香水茉莉初雪奶茶',p:19},
+  {n:'香水大红袍鲜奶茶',p:21},{n:'金色山脉珍珠奶茶',p:19},{n:'茉莉初雪轻乳茶',p:17},
+  {n:'生椰拿铁',p:22},{n:'茉莉初雪茶咖',p:22},{n:'落日橘子海',p:25},
+  {n:'小青柑气泡美式',p:22},{n:'霸气不加糖黑葡萄',p:25}
+ ]},
+{id:'chabaidao',name:'茶百道',emoji:'🐼',type:'奶茶',
+ options:{
+  size:[{n:'中杯',p:0},{n:'大杯',p:4}],
+  ice:[{n:'正常冰'},{n:'少冰'},{n:'去冰'},{n:'热'},{n:'温'}],
+  sugar:[{n:'全糖'},{n:'七分糖'},{n:'五分糖'},{n:'三分糖'},{n:'无糖'}],
+  toppings:[{n:'珍珠',p:2},{n:'波霸',p:2},{n:'椰果',p:2},{n:'布丁',p:2},{n:'茶冻',p:2},{n:'仙草',p:2},{n:'芋圆',p:3}]
+ },
+ products:[
+  {n:'杨枝甘露',p:17,tag:'招牌'},{n:'豆乳玉麒麟',p:16},{n:'草莓奶冻',p:16},
+  {n:'神颜草莓',p:16},{n:'手捣芋头红茶',p:15},{n:'手捣芋头绿茶',p:15},
+  {n:'西瓜啵啵',p:15},{n:'青提茉莉',p:16},{n:'葡萄冻冻',p:15},
+  {n:'百香果多多',p:14},{n:'凤梨可乐达',p:16},{n:'生椰西瓜',p:15},
+  {n:'茉莉奶绿',p:12},{n:'乌龙桃子',p:14},{n:'芒果蛋蜜汁',p:15},
+  {n:'红豆奶茶',p:12},{n:'布丁奶茶',p:13},{n:'黑糖波波奶茶',p:14},
+  {n:'固体杨枝甘露',p:18},{n:'超级杯水果茶',p:18}
+ ]},
+{id:'guming',name:'古茗',emoji:'🍇',type:'奶茶',
+ options:{
+  ice:[{n:'正常冰'},{n:'少冰'},{n:'去冰'},{n:'热'},{n:'温'}],
+  sugar:[{n:'全糖'},{n:'七分糖'},{n:'五分糖'},{n:'三分糖'},{n:'无糖'}],
+  toppings:[{n:'珍珠',p:2},{n:'椰果',p:2},{n:'布丁',p:2},{n:'仙草',p:2},{n:'芋圆',p:3},{n:'脆啵啵',p:3}]
+ },
+ products:[
+  {n:'超A芝士葡萄',p:18,tag:'招牌'},{n:'杨枝甘露轻盈版',p:16},{n:'云雾栀子青',p:15},
+  {n:'龙井香青团',p:16},{n:'布蕾脆脆奶芙',p:16},{n:'超A芝士桃桃',p:18},
+  {n:'云岭茉莉',p:15},{n:'生椰拿铁',p:15},{n:'香草籽拿铁',p:18},
+  {n:'云深幽兰',p:17},{n:'苹果杨桃油柑',p:14},{n:'金陵·米酿',p:15},
+  {n:'有米美式',p:15},{n:'超A芝士多肉葡萄',p:19},{n:'清爽芭乐提',p:18},
+  {n:'青青糯山',p:16},{n:'栀子芒芒椰',p:16},{n:'芝士奶盖四季春',p:13},
+  {n:'抹茶四季春',p:14},{n:'红苹果',p:18}
+ ]},
+{id:'auntea',name:'沪上阿姨',emoji:'🍚',type:'奶茶',
+ options:{
+  size:[{n:'中杯',p:0},{n:'大杯',p:2}],
+  ice:[{n:'正常冰'},{n:'少冰'},{n:'去冰'},{n:'热'}],
+  sugar:[{n:'全糖'},{n:'七分糖'},{n:'五分糖'},{n:'三分糖'},{n:'无糖'}],
+  toppings:[{n:'珍珠',p:2},{n:'椰果',p:2},{n:'布丁',p:2},{n:'仙草',p:2},{n:'芋圆',p:3},{n:'血糯米',p:3}]
+ },
+ products:[
+  {n:'血糯米奶茶',p:14,tag:'招牌'},{n:'杨枝甘露经典版',p:18},{n:'厚芋泥波波奶茶',p:17},
+  {n:'茉莉奶绿',p:12},{n:'多肉葡萄金砖',p:18},{n:'超嗲草莓大福',p:19},
+  {n:'QQ芋泥米麻薯',p:18},{n:'草莓桃桃茶',p:17},{n:'嫩仙草牛乳冰',p:16},
+  {n:'百香果三重奏',p:15},{n:'好大一桶水果茶',p:22},{n:'杨枝甘露清爽版',p:17},
+  {n:'多肉草莓金砖',p:18},{n:'西瓜椰椰',p:16},{n:'粒枣鲜煮白金茶',p:18},
+  {n:'鲜炖整颗梨',p:19},{n:'杨梅爆多肉',p:19},{n:'白兰碧螺茶咖',p:18},
+  {n:'浅浅清茉',p:14},{n:'厚芋泥生打椰',p:18}
+ ]},
+{id:'alittle',name:'一点点',emoji:'💚',type:'奶茶',
+ options:{
+  size:[{n:'中杯',p:0},{n:'大杯',p:3}],
+  ice:[{n:'正常冰'},{n:'少冰'},{n:'去冰'},{n:'热'},{n:'温'}],
+  sugar:[{n:'全糖'},{n:'七分糖'},{n:'五分糖'},{n:'三分糖'},{n:'无糖'}],
+  toppings:[{n:'波霸',p:3},{n:'珍珠',p:2},{n:'椰果',p:2},{n:'布丁',p:3},{n:'茶冻',p:2},{n:'仙草',p:2},{n:'芋圆',p:3},{n:'红豆',p:2}]
+ },
+ products:[
+  {n:'波霸奶茶',p:13,tag:'招牌'},{n:'四季奶青',p:12},{n:'奶绿',p:11},
+  {n:'乌龙奶茶',p:11},{n:'焦糖奶茶',p:12},{n:'红茶玛奇朵',p:15},
+  {n:'冰淇淋红茶',p:16},{n:'阿华田',p:14},{n:'可可芭蕾',p:16},
+  {n:'咖啡冻奶茶',p:14},{n:'小珍珠奶茶',p:12},{n:'四季春珍波椰',p:14},
+  {n:'布丁奶茶',p:13},{n:'椰果奶茶',p:12},{n:'茶冻奶绿',p:13},
+  {n:'蔓越莓奶绿',p:13},{n:'六窨茉莉奶绿',p:13},{n:'QQ美莓奶茶',p:16},
+  {n:'波霸奶绿',p:13},{n:'冰淇淋红茶',p:16}
+ ]},
+{id:'yeye',name:'爷爷不泡茶',emoji:'🍵',type:'奶茶',
+ options:{
+  ice:[{n:'正常冰'},{n:'少冰'},{n:'去冰'},{n:'热'}],
+  sugar:[{n:'全糖'},{n:'七分糖'},{n:'五分糖'},{n:'三分糖'},{n:'无糖'}],
+  toppings:[{n:'珍珠',p:2},{n:'椰果',p:2},{n:'布丁',p:2},{n:'仙草',p:2}]
+ },
+ products:[
+  {n:'兰香青柠',p:18,tag:'首创'},{n:'空山栀子',p:15},{n:'荔枝冰酿',p:16},
+  {n:'武汉茉莉',p:15},{n:'爆打奇兰柠檬茶',p:15},{n:'初恋玫瑰青提',p:18},
+  {n:'咸宁桂花',p:15},{n:'红苹果',p:18},{n:'栀子龙眼椰',p:17},
+  {n:'奇香青柠',p:16},{n:'鲜台芒·嚼酸奶',p:18},{n:'奇香桃桃',p:17},
+  {n:'草莓桃·嚼酸奶',p:18},{n:'奶油米酒',p:16},{n:'水蜜桃',p:17},
+  {n:'西西里柠檬柚',p:16},{n:'白兰玉露',p:15},{n:'美十三草莓奶冻',p:17},
+  {n:'西班牙红葡萄冰茶',p:18},{n:'乌日莫鲜奶酪',p:19}
+ ]},
+{id:'lianhong',name:'脸红秦田田',emoji:'🍑',type:'奶茶',
+ options:{
+  ice:[{n:'正常冰'},{n:'少冰'},{n:'去冰'},{n:'热'}],
+  sugar:[{n:'全糖'},{n:'七分糖'},{n:'五分糖'},{n:'三分糖'},{n:'无糖'}],
+  toppings:[{n:'珍珠',p:2},{n:'椰果',p:2},{n:'布丁',p:2},{n:'仙草',p:2}]
+ },
+ products:[
+  {n:'一亩楂田',p:15,tag:'招牌'},{n:'石里野山杏',p:15},{n:'西陆百香果',p:13},
+  {n:'玫田蓝莓',p:15},{n:'仲夏芒果',p:15},{n:'月下紫桑葚',p:16},
+  {n:'云间紫桑葚',p:16},{n:'青龙小栗茶',p:15},{n:'普洱佛手柑',p:15},
+  {n:'耕仓梅茶',p:15},{n:'酸木瓜冰沙',p:15},{n:'霜山酸木瓜',p:15},
+  {n:'石榴接骨木',p:16},{n:'山楂恋曲',p:15},{n:'草莓乌龙',p:16},
+  {n:'荔枝冰酿',p:16},{n:'青梅绿茶',p:14},{n:'桂花乌龙',p:15},
+  {n:'蜜桃乌龙',p:15},{n:'鸭屎香柠檬茶',p:14}
+ ]},
+{id:'zhuye',name:'煮叶',emoji:'🍃',type:'奶茶',
+ options:{
+  ice:[{n:'热'},{n:'冰-标准冰'},{n:'冰-少冰'},{n:'冰-去冰'}],
+  sugar:[{n:'标准糖'},{n:'半糖'},{n:'不另外加糖'}],
+  toppings:[{n:'青梅',p:3},{n:'青葡萄',p:3},{n:'青稞',p:3},{n:'荔枝',p:4}]
+ },
+ products:[
+  {n:'一颗青梅桂花弄',p:32,tag:'招牌'},{n:'冰摇杨梅栀子绿',p:32},{n:'冰摇椰青栀子绿',p:30},
+  {n:'桂花龙井牛乳茶',p:30},{n:'一颗青梅龙井',p:35},{n:'茉莉花茶冰沙',p:30},
+  {n:'草莓乌龙牛乳茶',p:32},{n:'一抹柚香奇兰牛乳茶',p:32},{n:'东方美人',p:28},
+  {n:'武夷岩茶',p:28},{n:'白茶·寿眉',p:26},{n:'铁观音',p:26},
+  {n:'普洱茶(熟)',p:26},{n:'茉莉花茶',p:25},{n:'平水日铸',p:28},
+  {n:'多丽茶',p:30},{n:'冰摇柠檬茶',p:25},{n:'海岩奶盖茶',p:28},
+  {n:'抹茶拿铁',p:30},{n:'风味煮茶',p:28}
+ ]},
+{id:'luckin',name:'瑞幸咖啡',emoji:'☕',type:'咖啡',
+ options:{
+  ice:[{n:'冰'},{n:'热'}],
+  sugar:[{n:'标准糖'},{n:'半糖'},{n:'不另外加糖'}],
+  toppings:[{n:'奶油顶',p:0},{n:'浓缩加份',p:4}]
+ },
+ products:[
+  {n:'生椰拿铁',p:19,tag:'招牌'},{n:'冰吸生椰拿铁',p:19},{n:'生椰丝绒拿铁',p:20},
+  {n:'厚乳拿铁',p:18},{n:'标准美式',p:13},{n:'加浓美式',p:16},
+  {n:'橙C美式',p:15},{n:'酱香拿铁',p:19},{n:'夏日青提拿铁',p:19},
+  {n:'生椰杨枝甘露',p:22},{n:'茉莉花香拿铁',p:18},{n:'丝绒拿铁',p:18},
+  {n:'陨石拿铁',p:19},{n:'生酪拿铁',p:19},{n:'冲绳黑糖丝绒拿铁',p:19},
+  {n:'香草丝绒拿铁',p:18},{n:'太妃榛香厚乳拿铁',p:20},{n:'圣诞烤布丁拿铁',p:20},
+  {n:'绯色月光(含酒精)',p:25},{n:'可可维也纳(含酒精)',p:25}
+ ]},
+{id:'starbucks',name:'星巴克',emoji:'⭐',type:'咖啡',
+ options:{
+  size:[{n:'中杯(Tall)',p:0},{n:'大杯(Grande)',p:3},{n:'超大杯(Venti)',p:6}],
+  ice:[{n:'冰'},{n:'热'}],
+  sugar:[{n:'全糖'},{n:'半糖'},{n:'无糖'}],
+  milk:[{n:'全脂奶',p:0},{n:'脱脂奶',p:0},{n:'燕麦奶',p:4},{n:'豆奶',p:4}],
+  toppings:[{n:'奶油顶',p:0},{n:'浓缩加份',p:4}]
+ },
+ products:[
+  {n:'美式',p:30},{n:'拿铁',p:34,tag:'招牌'},{n:'卡布奇诺',p:32},
+  {n:'摩卡',p:37},{n:'焦糖玛奇朵',p:37},{n:'馥芮白',p:36},
+  {n:'冷萃咖啡',p:35},{n:'香草拿铁',p:37},{n:'榛果拿铁',p:37},
+  {n:'焦糖拿铁',p:37},{n:'咖啡星冰乐',p:34},{n:'焦糖星冰乐',p:37},
+  {n:'摩卡星冰乐',p:39},{n:'抹茶星冰乐',p:37},{n:'草莓星冰乐',p:39},
+  {n:'芒果西番莲星冰乐',p:37},{n:'巧克力星冰乐',p:37},{n:'红茶拿铁',p:34},
+  {n:'抹茶拿铁',p:37},{n:'经典热巧克力',p:34}
+ ]},
+{id:'manner',name:'Manner Coffee',emoji:'☕',type:'咖啡',
+ options:{
+  ice:[{n:'冰'},{n:'热'}],
+  sugar:[{n:'标准'},{n:'半糖'},{n:'无糖'}],
+  milk:[{n:'全脂奶',p:0},{n:'燕麦奶',p:3}],
+  toppings:[{n:'浓缩加份',p:4}]
+ },
+ products:[
+  {n:'拿铁',p:20,tag:'招牌'},{n:'美式',p:15},{n:'澳白',p:22},
+  {n:'卡布奇诺',p:20},{n:'摩卡',p:25},{n:'燕麦澳白',p:25},
+  {n:'桂花风味拿铁',p:25},{n:'绿野仙踪',p:25},{n:'干姜美式',p:18},
+  {n:'清凉拿铁',p:20},{n:'坚果Dirty',p:20},{n:'桂花茉莉Dirty',p:22},
+  {n:'香橙美式',p:18},{n:'燕麦桂花拿铁',p:25},{n:'香柠耶加雪菲',p:28},
+  {n:'咖啡抹茶(冰)',p:22},{n:'苦橙拿铁',p:25},{n:'轻芝士风味拿铁',p:25},
+  {n:'黄油啤酒Dirty',p:25},{n:'SOE拿铁',p:30}
+ ]},
+{id:'mstand',name:'M Stand',emoji:'☕',type:'咖啡',
+ options:{
+  size:[{n:'标杯(冷)',p:0},{n:'标杯(热)',p:0}],
+  ice:[{n:'正常冰'},{n:'少冰'},{n:'去冰'}],
+  concentration:[{n:'正常浓度',p:0},{n:'减份浓度',p:0},{n:'加份浓度',p:5}],
+  milk:[{n:'全脂奶',p:0},{n:'燕麦奶',p:4},{n:'椰奶',p:4}]
+ },
+ products:[
+  {n:'拿铁',p:34},{n:'美式',p:28},{n:'生椰Dirty',p:36,tag:'招牌'},
+  {n:'咸芝士拿铁',p:38},{n:'紫拼配Dirty',p:36},{n:'椰香拿铁',p:40},
+  {n:'西柚气泡冰咖',p:38},{n:'太妃芝士奶咖',p:40},{n:'冰摇香橙美式',p:38},
+  {n:'香烤坚果拿铁',p:38},{n:'鲜椰冰咖',p:58},{n:'燕麦曲奇拿铁',p:42},
+  {n:'海盐芝士拿铁',p:38},{n:'奶油话梅拿铁',p:38},{n:'黑芝麻巴斯克拿铁',p:40},
+  {n:'话梅气泡美式',p:40},{n:'冰摇黄杏美式',p:38},{n:'黑糖奶咖',p:38},
+  {n:'燕麦拿铁',p:36},{n:'冷萃咖啡',p:35}
+ ]},
+{id:'grid',name:'Grid Coffee',emoji:'🟩',type:'咖啡',
+ options:{
+  ice:[{n:'冰'},{n:'热'}],
+  bean:[{n:'默认拼配',p:0},{n:'单一产地豆',p:0}],
+  toppings:[{n:'浓缩加份',p:5}]
+ },
+ products:[
+  {n:'美式',p:19.2},{n:'罗马人美式',p:20.8,tag:'热卖'},{n:'盐美式',p:22.4},
+  {n:'黑胡子美式',p:22.4},{n:'小脏咖',p:20.8},{n:'拿铁',p:22.4},
+  {n:'燕麦拿铁',p:22.4},{n:'澳白',p:24},{n:'白脱拿铁',p:25.6},
+  {n:'泰红鸳鸯拿铁',p:27.2},{n:'气泡冷萃',p:24},{n:'耶加冷萃',p:24},
+  {n:'果丁丁冷萃',p:25.6},{n:'冷萃维也纳',p:28.8},{n:'美式PRO',p:24},
+  {n:'大康宝蓝PRO',p:28.8},{n:'咸奶萃',p:27.2},{n:'咸卡布',p:27.2},
+  {n:'咸厚抹',p:27.2},{n:'埃塞俄比亚西达摩ALO',p:22.4}
+ ]}
+];
+
+// ==================== 全局状态 ====================
+let currentPage = 'home';
+let selectedBrand = null;
+let selectedProduct = null;
+let selectedOptions = {};
+let selectedToppings = [];
+let currentSession = null;
+let sbClient = null;
+let sbRealtime = null;
+// 默认Supabase配置（已内置，所有人打开即可使用）
+const DEFAULT_SB_CONFIG = {
+  url: 'https://pnscuhxxjqmswidxgfun.supabase.co',
+  key: 'sb_publishable_Kkd4EmDNC6DZmrbaMTT03w_51RAj6qj'
+};
+let config = { url: DEFAULT_SB_CONFIG.url, key: DEFAULT_SB_CONFIG.key };
+
+// ==================== 工具函数 ====================
+function $(id){return document.getElementById(id)}
+function genCode(){
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let s='';
+  for(let i=0;i<6;i++) s+=chars[Math.floor(Math.random()*chars.length)];
+  return s;
+}
+function fmtTime(ts){
+  if(!ts) return '';
+  const d=new Date(ts);
+  return d.getMonth()+1+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+}
+function showToast(msg){
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.8);color:#fff;padding:16px 24px;border-radius:12px;font-size:16px;z-index:9999;max-width:80%;text-align:center';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2000);
+}
+function floatEmoji(emoji){
+  for(let i=0;i<5;i++){
+    setTimeout(()=>{
+      const e=document.createElement('div');
+      e.className='floating-emoji';
+      e.textContent=emoji;
+      e.style.left=Math.random()*80+10+'%';
+      e.style.bottom='100px';
+      document.body.appendChild(e);
+      setTimeout(()=>e.remove(),3000);
+    },i*200);
+  }
+}
+
+// ==================== 页面导航 ====================
+function goPage(page, params){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  $('page-'+page).classList.add('active');
+  currentPage=page;
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const nav=document.querySelector('[data-nav="'+page+'"]');
+  if(nav) nav.classList.add('active');
+  window.scrollTo(0,0);
+  if(page==='host') initHostPage();
+  if(page==='order') initOrderPage(params);
+  if(page==='summary') initSummaryPage(params);
+  if(page==='history') initHistoryPage();
+  if(page==='config') initConfigPage();
+}
+
+// ==================== 首页 ====================
+function showJoinInput(){
+  $('join-input').style.display='block';
+  $('join-code').focus();
+}
+async function joinSession(){
+  const code=$('join-code').value.trim().toUpperCase();
+  if(code.length<6){showToast('请输入6位车号');return}
+  const session=await getSessionByCode(code);
+  if(!session){showToast('没找到这趟车，车号对吗？');return}
+  goPage('order',{session:session.id});
+}
+
+// ==================== 发车页 ====================
+function initHostPage(){
+  selectedBrand=null;
+  const grid=$('brand-grid');
+  grid.innerHTML='';
+  BRANDS.forEach(b=>{
+    const div=document.createElement('div');
+    div.className='brand-item';
+    div.innerHTML='<span class="emoji">'+b.emoji+'</span>'+b.name+'<div class="type">'+b.type+'</div>';
+    div.onclick=()=>{
+      selectedBrand=b;
+      document.querySelectorAll('.brand-item').forEach(i=>i.classList.remove('selected'));
+      div.classList.add('selected');
+    };
+    grid.appendChild(div);
+  });
+  // 默认截止时间为今天17:00，如果已过则明天
+  const now=new Date();
+  const d=new Date(now);
+  if(now.getHours()>=17) d.setDate(d.getDate()+1);
+  $('deadline-date').value=d.toISOString().split('T')[0];
+  $('deadline-time').value='17:00';
+  $('host-name').value='';
+}
+
+async function createSession(){
+  if(!selectedBrand){showToast('先选个品牌啊老板！');return}
+  const name=$('host-name').value.trim();
+  if(!name){showToast('老板大名还没填呢！');return}
+  const date=$('deadline-date').value;
+  const time=$('deadline-time').value;
+  if(!date||!time){showToast('截止时间还没设！');return}
+  const deadline=new Date(date+'T'+time+':00').getTime();
+  if(deadline<=Date.now()){showToast('截止时间得比现在晚吧？');return}
+  const session={
+    id:genCode()+Date.now().toString(36),
+    code:genCode(),
+    brandId:selectedBrand.id,
+    brandName:selectedBrand.name,
+    brandEmoji:selectedBrand.emoji,
+    hostName:name,
+    deadline:deadline,
+    createdAt:Date.now(),
+    status:'active',
+    orders:[]
+  };
+  await saveSession(session);
+  // 保存到历史
+  await addToHistory(session);
+  showToast('发车成功！老板大气！');
+  floatEmoji('🎉');
+  goPage('summary',{session:session.id});
+}
+
+// ==================== 点单页 ====================
+async function initOrderPage(params){
+  selectedProduct=null;
+  selectedOptions={};
+  selectedToppings=[];
+  $('option-panel').style.display='none';
+  $('order-content').style.display='block';
+  $('order-locked').style.display='none';
+  if(!params||!params.session){showToast('缺少会话信息');goPage('home');return}
+  currentSession=await getSession(params.session);
+  if(!currentSession){showToast('会话不存在');goPage('home');return}
+  // 检查是否锁定
+  if(currentSession.status==='locked'||Date.now()>=currentSession.deadline){
+    $('order-content').style.display='none';
+    $('order-locked').style.display='block';
+    renderBossBanner('order-boss-banner',currentSession);
+    return;
+  }
+  renderBossBanner('order-boss-banner',currentSession);
+  renderCountdown('order-countdown',currentSession);
+  // 渲染商品列表
+  const brand=BRANDS.find(b=>b.id===currentSession.brandId);
+  const list=$('product-list');
+  list.innerHTML='';
+  brand.products.forEach((p,i)=>{
+    const div=document.createElement('div');
+    div.className='product-item';
+    div.innerHTML='<div class="name">'+p.n+(p.tag?'<span class="tag">'+p.tag+'</span>':'')+'</div><div class="price">¥'+p.p+'</div>';
+    div.onclick=()=>selectProduct(p,brand);
+    list.appendChild(div);
+  });
+  // 检查是否已有订单，预填
+  const existing=currentSession.orders?currentSession.orders.find(o=>o.userName===getLocalName()):null;
+  if(existing){
+    $('order-user-name').value=existing.userName;
+    const p=brand.products.find(x=>x.n===existing.productName);
+    if(p){selectProduct(p,brand);
+      if(existing.options){
+        Object.keys(existing.options).forEach(k=>{
+          const chip=document.querySelector('[data-option="'+k+'"][data-value="'+existing.options[k]+'"]');
+          if(chip) chip.click();
+        });
+      }
+      if(existing.toppings){
+        existing.toppings.forEach(t=>{
+          const chip=document.querySelector('[data-topping="'+t+'"]');
+          if(chip) chip.click();
+        });
+      }
+    }
+  }
+  // 启动倒计时检查
+  startCountdownCheck(currentSession);
+}
+
+function getLocalName(){
+  return localStorage.getItem('milk-tea-user-name')||'';
+}
+
+function selectProduct(product,brand){
+  selectedProduct=product;
+  selectedOptions={};
+  selectedToppings=[];
+  document.querySelectorAll('.product-item').forEach(i=>i.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  $('option-panel').style.display='block';
+  const groups=$('option-groups');
+  groups.innerHTML='';
+  const opts=brand.options;
+  // 渲染各选项组
+  const optionDefs=[
+    {key:'size',label:'杯型'},
+    {key:'ice',label:'温度'},
+    {key:'sugar',label:'糖度'},
+    {key:'milk',label:'奶底'},
+    {key:'concentration',label:'浓度'},
+    {key:'bean',label:'咖啡豆'}
+  ];
+  optionDefs.forEach(def=>{
+    if(!opts[def.key]) return;
+    const group=document.createElement('div');
+    group.className='option-group';
+    group.innerHTML='<div class="label">'+def.label+'</div><div class="option-chips" id="chips-'+def.key+'"></div>';
+    groups.appendChild(group);
+    const container=$('chips-'+def.key);
+    opts[def.key].forEach((opt,i)=>{
+      const chip=document.createElement('div');
+      chip.className='option-chip'+(i===0?' selected':'');
+      chip.dataset.option=def.key;
+      chip.dataset.value=opt.n;
+      chip.innerHTML=opt.n+(opt.p?'<span class="add-price"> +¥'+opt.p+'</span>':'');
+      if(i===0) selectedOptions[def.key]=opt.n;
+      chip.onclick=()=>{
+        container.querySelectorAll('.option-chip').forEach(c=>c.classList.remove('selected'));
+        chip.classList.add('selected');
+        selectedOptions[def.key]=opt.n;
+        updateOrderSummary();
+      };
+      container.appendChild(chip);
+    });
+  });
+  // 渲染小料
+  if(opts.toppings&&opts.toppings.length){
+    const group=document.createElement('div');
+    group.className='option-group';
+    group.innerHTML='<div class="label">小料（可多选）</div><div class="topping-chips" id="chips-toppings"></div>';
+    groups.appendChild(group);
+    const container=$('chips-toppings');
+    opts.toppings.forEach(t=>{
+      const chip=document.createElement('div');
+      chip.className='topping-chip';
+      chip.dataset.topping=t.n;
+      chip.innerHTML=t.n+(t.p?'<span class="add-price"> +¥'+t.p+'</span>':'');
+      chip.onclick=()=>{
+        chip.classList.toggle('selected');
+        if(chip.classList.contains('selected')){
+          if(!selectedToppings.includes(t.n)) selectedToppings.push(t.n);
+        }else{
+          selectedToppings=selectedToppings.filter(x=>x!==t.n);
+        }
+        updateOrderSummary();
+      };
+      container.appendChild(chip);
+    });
+  }
+  updateOrderSummary();
+  // 滚动到选项面板
+  setTimeout(()=>$('option-panel').scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+
+function calcPrice(){
+  if(!selectedProduct) return 0;
+  let price=selectedProduct.p;
+  const brand=BRANDS.find(b=>b.id===currentSession.brandId);
+  const opts=brand.options;
+  Object.keys(selectedOptions).forEach(key=>{
+    const val=selectedOptions[key];
+    const list=opts[key];
+    if(list){
+      const item=list.find(x=>x.n===val);
+      if(item&&item.p) price+=item.p;
+    }
+  });
+  if(opts.toppings){
+    selectedToppings.forEach(t=>{
+      const item=opts.toppings.find(x=>x.n===t);
+      if(item&&item.p) price+=item.p;
+    });
+  }
+  return price;
+}
+
+function updateOrderSummary(){
+  if(!selectedProduct) return;
+  const summary=$('order-summary');
+  const price=calcPrice();
+  let detail=selectedProduct.n;
+  const parts=[];
+  Object.keys(selectedOptions).forEach(k=>{
+    if(selectedOptions[k]) parts.push(selectedOptions[k]);
+  });
+  if(selectedToppings.length) parts.push('小料:'+selectedToppings.join('、'));
+  if(parts.length) detail+='（'+parts.join(' / ')+'）';
+  summary.innerHTML='<div class="row"><span>饮品</span><span>'+selectedProduct.n+'</span></div>'+
+    '<div class="row"><span>规格</span><span style="text-align:right;font-size:12px">'+parts.join(' / ')+'</span></div>'+
+    '<div class="total"><span>合计</span><span>¥'+price.toFixed(1)+'</span></div>';
+}
+
+async function submitOrder(){
+  if(!selectedProduct){showToast('先选饮品啊！');return}
+  const userName=$('order-user-name').value.trim();
+  if(!userName){showToast('名字都不填，老板知道是谁啊？');return}
+  localStorage.setItem('milk-tea-user-name',userName);
+  const price=calcPrice();
+  const order={
+    id:Date.now().toString(36)+Math.random().toString(36).substr(2,5),
+    userName:userName,
+    productName:selectedProduct.n,
+    productPrice:selectedProduct.p,
+    options:{...selectedOptions},
+    toppings:[...selectedToppings],
+    totalPrice:price,
+    createdAt:Date.now()
+  };
+  // 检查是否锁定
+  const fresh=await getSession(currentSession.id);
+  if(fresh.status==='locked'||Date.now()>=fresh.deadline){
+    showLockModal();
+    return;
+  }
+  // 每人限一杯，覆盖之前的
+  if(!fresh.orders) fresh.orders=[];
+  const idx=fresh.orders.findIndex(o=>o.userName===userName);
+  if(idx>=0) fresh.orders[idx]=order;
+  else fresh.orders.push(order);
+  await saveSession(fresh);
+  currentSession=fresh;
+  showToast('下单成功！感谢老板！');
+  floatEmoji('🧋');
+  setTimeout(()=>{
+    showToast('可以把链接发给同事啦');
+  },1500);
+}
+
+// ==================== 汇总页 ====================
+async function initSummaryPage(params){
+  if(!params||!params.session){showToast('缺少会话信息');goPage('home');return}
+  currentSession=await getSession(params.session);
+  if(!currentSession){showToast('会话不存在');goPage('home');return}
+  renderBossBanner('summary-boss-banner',currentSession);
+  renderCountdown('summary-countdown',currentSession);
+  renderSummary();
+  // 启动实时更新（如果有supabase）
+  startRealtime(currentSession.id);
+}
+
+function renderSummary(){
+  const orders=currentSession.orders||[];
+  // 按商品汇总
+  const productMap={};
+  orders.forEach(o=>{
+    const key=o.productName+'|'+JSON.stringify(o.options)+'|'+o.toppings.join(',');
+    if(!productMap[key]){
+      productMap[key]={name:o.productName,options:o.options,toppings:o.toppings,price:o.totalPrice,count:0,users:[]};
+    }
+    productMap[key].count++;
+    productMap[key].users.push(o.userName);
+  });
+  const productHtml=Object.values(productMap).length?
+    '<div class="summary-group">'+Object.values(productMap).map(g=>{
+      const parts=[];
+      Object.keys(g.options||{}).forEach(k=>{if(g.options[k])parts.push(g.options[k])});
+      if(g.toppings&&g.toppings.length)parts.push('小料:'+g.toppings.join('、'));
+      return '<div class="summary-item"><span>'+g.name+(parts.length?'<br><span style="font-size:11px;color:#999">'+parts.join(' / ')+'</span>':'')+'</span><span class="count">×'+g.count+'</span></div>';
+    }).join('')+'</div>':
+    '<div class="card"><div class="empty-state"><div class="emoji">😴</div><div class="text">还没人点单</div><div style="font-size:13px;color:#999;margin-top:8px">把链接发到群里吧</div></div></div>';
+  $('summary-product').innerHTML=productHtml;
+  // 按人汇总
+  const personHtml=orders.length?
+    '<div class="order-list">'+orders.map(o=>{
+      const parts=[];
+      Object.keys(o.options||{}).forEach(k=>{if(o.options[k])parts.push(o.options[k])});
+      if(o.toppings&&o.toppings.length)parts.push('小料:'+o.toppings.join('、'));
+      return '<div class="order-card"><div class="header"><span class="user">👤 '+o.userName+'</span><span class="time">'+fmtTime(o.createdAt)+'</span></div><div class="detail">'+o.productName+(parts.length?'<br>'+parts.join(' / '):'')+'</div><div class="price">¥'+o.totalPrice.toFixed(1)+'</div></div>';
+    }).join('')+'</div>':
+    '<div class="card"><div class="empty-state"><div class="emoji">😴</div><div class="text">还没人点单</div></div></div>';
+  $('summary-person').innerHTML=personHtml;
+  // 总览
+  if(orders.length){
+    $('summary-total-card').style.display='block';
+    $('total-cups').textContent=orders.length+' 杯';
+    const total=orders.reduce((s,o)=>s+o.totalPrice,0);
+    $('total-amount').textContent='¥'+total.toFixed(1);
+    $('avg-amount').textContent='¥'+(total/orders.length).toFixed(1);
+  }else{
+    $('summary-total-card').style.display='none';
+  }
+}
+
+function switchSummaryTab(tab){
+  document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  $('summary-product').style.display=tab==='product'?'block':'none';
+  $('summary-person').style.display=tab==='person'?'block':'none';
+}
+
+function copySummary(){
+  const orders=currentSession.orders||[];
+  if(!orders.length){showToast('还没订单可复制');return}
+  let text='🧋 '+currentSession.brandName+' 点单汇总\n';
+  text+'👑 发车人：'+currentSession.hostName+'\n';
+  text+='⏰ 截止：'+fmtTime(currentSession.deadline)+'\n';
+  text+='━━━━━━━━━━━━━\n';
+  text+='【按商品汇总】\n';
+  const productMap={};
+  orders.forEach(o=>{
+    const key=o.productName+'|'+JSON.stringify(o.options)+'|'+o.toppings.join(',');
+    if(!productMap[key]) productMap[key]={name:o.productName,options:o.options,toppings:o.toppings,count:0};
+    productMap[key].count++;
+  });
+  Object.values(productMap).forEach(g=>{
+    const parts=[];
+    Object.keys(g.options||{}).forEach(k=>{if(g.options[k])parts.push(g.options[k])});
+    if(g.toppings&&g.toppings.length)parts.push(g.toppings.join('、'));
+    text+='• '+g.name+(parts.length?'('+parts.join('/')+')':'')+' ×'+g.count+'\n';
+  });
+  text+='\n【按人汇总】\n';
+  orders.forEach(o=>{
+    const parts=[];
+    Object.keys(o.options||{}).forEach(k=>{if(o.options[k])parts.push(o.options[k])});
+    if(o.toppings&&o.toppings.length)parts.push(o.toppings.join('、'));
+    text+='• '+o.userName+'：'+o.productName+(parts.length?'('+parts.join('/')+')':'')+' ¥'+o.totalPrice.toFixed(1)+'\n';
+  });
+  const total=orders.reduce((s,o)=>s+o.totalPrice,0);
+  text+='━━━━━━━━━━━━━\n';
+  text+='总计：'+orders.length+'杯，¥'+total.toFixed(1)+'\n';
+  text+='感谢'+currentSession.hostName+'老板！🎉';
+  navigator.clipboard.writeText(text).then(()=>{
+    showToast('已复制到剪贴板！');
+  }).catch(()=>{
+    // 降级方案
+    const ta=document.createElement('textarea');
+    ta.value=text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+    showToast('已复制到剪贴板！');
+  });
+}
+
+// ==================== 历史页 ====================
+async function initHistoryPage(){
+  const list=await getHistory();
+  const container=$('history-list');
+  if(!list.length){
+    container.innerHTML='<div class="card"><div class="empty-state"><div class="emoji">📭</div><div class="text">还没有历史发车记录</div><div style="font-size:13px;color:#999;margin-top:8px">快去当一次老板吧！</div></div></div>';
+    return;
+  }
+  container.innerHTML=list.slice().reverse().map(s=>{
+    const locked=s.status==='locked'||Date.now()>=s.deadline;
+    const orderCount=s.orders?s.orders.length:0;
+    return '<div class="history-item" onclick="goPage(\'summary\',{session:\''+s.id+'\'})">'+
+      '<div class="brand">'+s.brandEmoji+' '+s.brandName+'</div>'+
+      '<div class="meta">👑 '+s.hostName+' 老板 · '+fmtTime(s.createdAt)+' 发车</div>'+
+      '<div class="meta">⏰ 截止 '+fmtTime(s.deadline)+' · 🧋 '+orderCount+' 杯</div>'+
+      '<span class="status '+(locked?'locked':'active')+'">'+(locked?'已截止':'进行中')+'</span>'+
+      '</div>';
+  }).join('');
+}
+
+// ==================== 配置页 ====================
+function initConfigPage(){
+  const saved=localStorage.getItem('milk-tea-sb-config');
+  if(saved){
+    try{
+      config=JSON.parse(saved);
+    }catch(e){}
+  }
+  // 显示当前配置（默认或用户自定义）
+  $('sb-url').value=config.url||'';
+  $('sb-key').value=config.key||'';
+  renderConfigStatus();
+}
+
+function renderConfigStatus(){
+  const status=$('config-status');
+  if(sbClient){
+    status.innerHTML='<div class="status-badge online"><span class="dot"></span>Supabase 已连接，多人实时共享已开启</div>';
+  }else{
+    status.innerHTML='<div class="status-badge offline"><span class="dot"></span>未配置后端，当前为本地模式（仅单人可见）</div>';
+  }
+}
+
+function saveConfig(){
+  config.url=$('sb-url').value.trim();
+  config.key=$('sb-key').value.trim();
+  if(!config.url||!config.key){
+    showToast('URL和Key都要填哦');
+    return;
+  }
+  localStorage.setItem('milk-tea-sb-config',JSON.stringify(config));
+  loadSbScript(()=>{
+    initSupabase();
+    setTimeout(()=>{
+      if(sbClient){
+        showToast('配置成功！多人共享已开启');
+      }else{
+        showToast('配置失败，请检查URL和Key');
+      }
+      renderConfigStatus();
+    },500);
+  });
+}
+
+function initSupabaseTables(){
+  if(!sbClient){showToast('先保存配置再初始化');return}
+  // 显示建表SQL弹窗（Supabase不允许通过RPC执行DDL，需要手动在SQL Editor执行）
+  const sql = `CREATE TABLE IF NOT EXISTS sessions (
+  id TEXT PRIMARY KEY,
+  code TEXT UNIQUE,
+  brand_id TEXT,
+  brand_name TEXT,
+  brand_emoji TEXT,
+  host_name TEXT,
+  deadline BIGINT,
+  created_at BIGINT,
+  status TEXT DEFAULT 'active',
+  orders JSONB DEFAULT '[]'::jsonb
+);
+
+-- 开启RLS（可选，建议开启）
+ALTER TABLE sessions ENABLE ROW LEVEL SECURITY;
+
+-- 允许所有人读写（内部使用，如需更安全可自定义策略）
+CREATE POLICY "Enable read access for all users" ON sessions FOR SELECT USING (true);
+CREATE POLICY "Enable insert access for all users" ON sessions FOR INSERT WITH CHECK (true);
+CREATE POLICY "Enable update access for all users" ON sessions FOR UPDATE USING (true);`;
+  
+  $('sql-modal-content').textContent = sql;
+  $('sql-modal').style.display = 'flex';
+}
+
+function clearLocalData(){
+  if(!confirm('确定要清空所有本地数据吗？此操作不可恢复！'))return;
+  localStorage.removeItem('milk-tea-sessions');
+  localStorage.removeItem('milk-tea-history');
+  localStorage.removeItem('milk-tea-user-name');
+  showToast('本地数据已清空');
+  goPage('home');
+}
+
+// ==================== 数据层（Supabase + localStorage 降级） ====================
+function initSupabase(){
+  if(!config.url||!config.key){sbClient=null;return}
+  if(typeof supabase==='undefined'){
+    // SDK还没加载，等待加载
+    const check=setInterval(()=>{
+      if(typeof supabase!=='undefined'){
+        clearInterval(check);
+        doInitSupabase();
+      }
+    },100);
+    setTimeout(()=>clearInterval(check),10000);
+    return;
+  }
+  doInitSupabase();
+}
+function doInitSupabase(){
+  try{
+    sbClient=supabase.createClient(config.url,config.key,{
+      realtime:{params:{eventsPerSecond:10}}
+    });
+  }catch(e){
+    console.error('Supabase init failed',e);
+    sbClient=null;
+  }
+}
+
+async function saveSession(session){
+  if(sbClient){
+    try{
+      const {data,error}=await sbClient.from('sessions').upsert({
+        id:session.id,
+        code:session.code,
+        brand_id:session.brandId,
+        brand_name:session.brandName,
+        brand_emoji:session.brandEmoji,
+        host_name:session.hostName,
+        deadline:session.deadline,
+        created_at:session.createdAt,
+        status:session.status,
+        orders:session.orders||[]
+      });
+      if(error) throw error;
+      return true;
+    }catch(e){
+      console.error('Supabase save failed, fallback to local',e);
+    }
+  }
+  // localStorage 降级
+  const sessions=JSON.parse(localStorage.getItem('milk-tea-sessions')||'{}');
+  sessions[session.id]=session;
+  localStorage.setItem('milk-tea-sessions',JSON.stringify(sessions));
+  return true;
+}
+
+async function getSession(id){
+  if(sbClient){
+    try{
+      const {data,error}=await sbClient.from('sessions').select('*').eq('id',id).single();
+      if(error) throw error;
+      if(data) return mapSessionFromDb(data);
+    }catch(e){
+      console.error('Supabase get failed, fallback to local',e);
+    }
+  }
+  const sessions=JSON.parse(localStorage.getItem('milk-tea-sessions')||'{}');
+  return sessions[id]||null;
+}
+
+async function getSessionByCode(code){
+  if(sbClient){
+    try{
+      const {data,error}=await sbClient.from('sessions').select('*').eq('code',code).single();
+      if(error) throw error;
+      if(data) return mapSessionFromDb(data);
+    }catch(e){
+      console.error('Supabase getByCode failed, fallback to local',e);
+    }
+  }
+  const sessions=JSON.parse(localStorage.getItem('milk-tea-sessions')||'{}');
+  return Object.values(sessions).find(s=>s.code===code)||null;
+}
+
+function mapSessionFromDb(row){
+  return {
+    id:row.id,
+    code:row.code,
+    brandId:row.brand_id,
+    brandName:row.brand_name,
+    brandEmoji:row.brand_emoji,
+    hostName:row.host_name,
+    deadline:row.deadline,
+    createdAt:row.created_at,
+    status:row.status,
+    orders:row.orders||[]
+  };
+}
+
+async function addToHistory(session){
+  // 历史只存本地（因为历史是个人视角的）
+  const history=JSON.parse(localStorage.getItem('milk-tea-history')||'[]');
+  // 去重
+  if(!history.find(h=>h.id===session.id)){
+    history.push({
+      id:session.id,
+      code:session.code,
+      brandId:session.brandId,
+      brandName:session.brandName,
+      brandEmoji:session.brandEmoji,
+      hostName:session.hostName,
+      deadline:session.deadline,
+      createdAt:session.createdAt,
+      status:session.status
+    });
+    localStorage.setItem('milk-tea-history',JSON.stringify(history));
+  }
+}
+
+async function getHistory(){
+  const history=JSON.parse(localStorage.getItem('milk-tea-history')||'[]');
+  // 尝试从supabase同步最新的order数量
+  if(sbClient){
+    for(let i=0;i<history.length;i++){
+      try{
+        const {data}=await sbClient.from('sessions').select('orders,status').eq('id',history[i].id).single();
+        if(data){
+          history[i].orders=data.orders||[];
+          history[i].status=data.status;
+        }
+      }catch(e){}
+    }
+  }else{
+    // 本地模式下从sessions补全
+    const sessions=JSON.parse(localStorage.getItem('milk-tea-sessions')||'{}');
+    history.forEach(h=>{
+      if(sessions[h.id]){
+        h.orders=sessions[h.id].orders||[];
+        h.status=sessions[h.id].status;
+      }
+    });
+  }
+  return history;
+}
+
+// ==================== 实时更新 ====================
+let realtimeChannel=null;
+function startRealtime(sessionId){
+  if(!sbClient) return;
+  if(realtimeChannel) sbClient.removeChannel(realtimeChannel);
+  realtimeChannel=sbClient.channel('session-'+sessionId)
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'sessions',filter:'id=eq.'+sessionId},async(payload)=>{
+      const fresh=mapSessionFromDb(payload.new);
+      currentSession=fresh;
+      renderSummary();
+    })
+    .subscribe();
+}
+
+// ==================== 倒计时与锁单 ====================
+let countdownTimer=null;
+function startCountdownCheck(session){
+  if(countdownTimer) clearInterval(countdownTimer);
+  countdownTimer=setInterval(async()=>{
+    if(Date.now()>=session.deadline){
+      clearInterval(countdownTimer);
+      // 自动锁单
+      const fresh=await getSession(session.id);
+      if(fresh&&fresh.status==='active'){
+        fresh.status='locked';
+        await saveSession(fresh);
+      }
+      if(currentPage==='order'){
+        $('order-content').style.display='none';
+        $('order-locked').style.display='block';
+      }
+      showLockModal();
+    }else{
+      updateCountdownDisplay(session);
+    }
+  },1000);
+}
+
+function updateCountdownDisplay(session){
+  const diff=session.deadline-Date.now();
+  const h=Math.floor(diff/3600000);
+  const m=Math.floor((diff%3600000)/60000);
+  const s=Math.floor((diff%60000)/1000);
+  const text=h>0?h+'小时'+m+'分'+s+'秒':m+'分'+s+'秒';
+  document.querySelectorAll('[data-countdown]').forEach(el=>{
+    el.querySelector('.time').textContent=text;
+  });
+}
+
+function renderCountdown(containerId,session){
+  const container=$(containerId);
+  const locked=session.status==='locked'||Date.now()>=session.deadline;
+  container.innerHTML='<div class="countdown '+(locked?'locked':'')+'" data-countdown>'+
+    (locked?'已截止':'距离截止还有')+
+    '<div class="time">'+(locked?'已锁单':'计算中...')+'</div>'+
+    '<div style="font-size:12px;margin-top:4px">截止时间：'+fmtTime(session.deadline)+'</div>'+
+    '</div>';
+  if(!locked) updateCountdownDisplay(session);
+}
+
+function renderBossBanner(containerId,session){
+  const container=$(containerId);
+  container.innerHTML='<div class="boss-banner">'+
+    '<div class="thanks">🎉 感谢 🎉</div>'+
+    '<div class="boss-name">'+session.hostName+' 老板</div>'+
+    '<div class="brand-info">'+session.brandEmoji+'  '+session.brandName+' · 车号 '+session.code+'</div>'+
+    '</div>'+
+    '<div class="share-box">'+
+    '<div class="label">📎 分享链接（复制发到群里）</div>'+
+    '<div class="url">'+window.location.origin+window.location.pathname+'#order?session='+session.id+'</div>'+
+    '<button class="copy-btn" onclick="copyShareLink(\''+session.id+'\')">复制链接</button>'+
+    '<button class="copy-btn" onclick="copyShareCode(\''+session.code+'\')">复制车号</button>'+
+    '</div>';
+}
+
+function copyShareLink(sessionId){
+  const url=window.location.origin+window.location.pathname+'#order?session='+sessionId;
+  navigator.clipboard.writeText(url).then(()=>showToast('链接已复制！')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=url;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast('链接已复制！');
+  });
+}
+function copyShareCode(code){
+  navigator.clipboard.writeText(code).then(()=>showToast('车号已复制：'+code)).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=code;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast('车号已复制：'+code);
+  });
+}
+
+function showLockModal(){
+  $('lock-modal').style.display='flex';
+}
+function closeLockModal(){
+  $('lock-modal').style.display='none';
+}
+function closeSqlModal(){
+  $('sql-modal').style.display='none';
+}
+function copySql(){
+  const sql = $('sql-modal-content').textContent;
+  navigator.clipboard.writeText(sql).then(()=>{
+    showToast('SQL已复制！去Supabase执行吧');
+  }).catch(()=>{
+    const ta=document.createElement('textarea');
+    ta.value=sql;document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');ta.remove();
+    showToast('SQL已复制！去Supabase执行吧');
+  });
+}
+
+// ==================== Hash 路由 ====================
+function parseHash(){
+  const hash=window.location.hash.slice(1);
+  if(!hash) return {page:'home'};
+  const [page,query]=hash.split('?');
+  const params={};
+  if(query){
+    query.split('&').forEach(p=>{
+      const [k,v]=p.split('=');
+      params[k]=decodeURIComponent(v);
+    });
+  }
+  return {page,params};
+}
+
+function handleHashChange(){
+  const {page,params}=parseHash();
+  const validPages=['home','host','order','summary','history','config'];
+  if(validPages.includes(page)){
+    goPage(page,params);
+  }else{
+    goPage('home');
+  }
+}
+
+window.addEventListener('hashchange',handleHashChange);
+
+// ==================== 初始化 ====================
+let sbScriptLoaded=false;
+function loadSbScript(callback){
+  if(typeof supabase!=='undefined'){callback();return}
+  if(sbScriptLoaded){
+    const check=setInterval(()=>{if(typeof supabase!=='undefined'){clearInterval(check);callback()}},100);
+    setTimeout(()=>clearInterval(check),10000);
+    return;
+  }
+  sbScriptLoaded=true;
+  const script=document.createElement('script');
+  script.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+  script.onload=callback;
+  script.onerror=()=>{sbScriptLoaded=false;callback()};
+  document.head.appendChild(script);
+}
+
+window.addEventListener('load',()=>{
+  // 加载配置
+  const saved=localStorage.getItem('milk-tea-sb-config');
+  if(saved){
+    try{config=JSON.parse(saved)}catch(e){}
+  }
+  // 如果有配置，加载SDK并初始化
+  if(config.url&&config.key){
+    loadSbScript(()=>{
+      initSupabase();
+      if(currentPage==='config') renderConfigStatus();
+    });
+  }
+  // 处理初始hash（延迟执行确保DOM就绪）
+  setTimeout(()=>{
+    handleHashChange();
+  },50);
+});
+
+// DOM就绪时也处理一次hash
+document.addEventListener('DOMContentLoaded',()=>{
+  if(location.hash && location.hash.length>1){
+    setTimeout(()=>handleHashChange(),100);
+  }
+});
+</script>
+</body>
+</html>
